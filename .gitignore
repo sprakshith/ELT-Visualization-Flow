@@ -164,3 +164,6 @@ access_credentials
 
 # Unwanted Datasets
 Datasets/BackupDatasets
+
+# Intermediate Datasets
+Datasets/IntermediateDatasets/GeocodedJsonFiles

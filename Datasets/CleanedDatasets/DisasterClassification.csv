@@ -1,0 +1,38 @@
+ClassificationKey|Group|Subgroup|Type|Subtype|Unit
+nat-bio-epi-bac|Natural|Biological|Epidemic|Bacterial disease|
+nat-bio-epi-dis|Natural|Biological|Epidemic|Infectious disease (General)|Vaccinated
+nat-bio-epi-par|Natural|Biological|Epidemic|Parasitic disease|Vaccinated
+nat-bio-epi-vir|Natural|Biological|Epidemic|Viral disease|Vaccinated
+nat-bio-inf-loc|Natural|Biological|Infestation|Locust infestation|
+nat-cli-dro-dro|Natural|Climatological|Drought|Drought|Km2
+nat-cli-glo-glo|Natural|Climatological|Glacial lake outburst flood|Glacial lake outburst flood|
+nat-cli-wil-for|Natural|Climatological|Wildfire|Forest fire|Km2
+nat-cli-wil-lan|Natural|Climatological|Wildfire|Land fire (Brush, Bush, Pasture)|Km2
+nat-cli-wil-wil|Natural|Climatological|Wildfire|Wildfire (General)|Km2
+nat-ext-imp-col|Natural|Extra-terrestrial|Impact|Collision|
+nat-geo-ear-gro|Natural|Geophysical|Earthquake|Ground movement|Richter
+nat-geo-ear-tsu|Natural|Geophysical|Earthquake|Tsunami|Richter
+nat-geo-mmd-lan|Natural|Geophysical|Mass movement (dry)|Landslide (dry)|
+nat-geo-mmd-roc|Natural|Geophysical|Mass movement (dry)|Rockfall (dry)|
+nat-geo-vol-ash|Natural|Geophysical|Volcanic activity|Ash fall|
+nat-geo-vol-vol|Natural|Geophysical|Volcanic activity|Volcanic activity (General)|
+nat-hyd-flo-coa|Natural|Hydrological|Flood|Coastal flood|Km2
+nat-hyd-flo-fla|Natural|Hydrological|Flood|Flash flood|Km2
+nat-hyd-flo-flo|Natural|Hydrological|Flood|Flood (General)|Km2
+nat-hyd-flo-riv|Natural|Hydrological|Flood|Riverine flood|Km2
+nat-hyd-mmw-ava|Natural|Hydrological|Mass movement (wet)|Avalanche (wet)|
+nat-hyd-mmw-lan|Natural|Hydrological|Mass movement (wet)|Landslide (wet)|
+nat-hyd-mmw-mud|Natural|Hydrological|Mass movement (wet)|Mudslide|
+nat-met-ext-col|Natural|Meteorological|Extreme temperature|Cold wave|°C
+nat-met-ext-hea|Natural|Meteorological|Extreme temperature|Heat wave|°C
+nat-met-ext-sev|Natural|Meteorological|Extreme temperature|Severe winter conditions|°C
+nat-met-fog-fog|Natural|Meteorological|Fog|Fog|
+nat-met-sto-bli|Natural|Meteorological|Storm|Blizzard/Winter storm|Kph
+nat-met-sto-der|Natural|Meteorological|Storm|Derecho|Kph
+nat-met-sto-ext|Natural|Meteorological|Storm|Extra-tropical storm|Kph
+nat-met-sto-hai|Natural|Meteorological|Storm|Hail|Kph
+nat-met-sto-lig|Natural|Meteorological|Storm|Lightning/Thunderstorms|Kph
+nat-met-sto-sev|Natural|Meteorological|Storm|Severe weather|Kph
+nat-met-sto-sto|Natural|Meteorological|Storm|Storm (General)|Kph
+nat-met-sto-tor|Natural|Meteorological|Storm|Tornado|Kph
+nat-met-sto-tro|Natural|Meteorological|Storm|Tropical cyclone|Kph
