@@ -1,0 +1,3 @@
+[submodule "ELT_DBT_Project"]
+	path = ELT_DBT_Project
+	url = https://github.com/sprakshith/ELT_DBT_Project.git
