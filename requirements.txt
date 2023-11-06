@@ -4,3 +4,4 @@ googlemaps~=4.10.0
 google-cloud-bigquery~=3.13.0
 dbt-core~=1.6.7
 dbt-bigquery~=1.6.8
+requests~=2.31.0
