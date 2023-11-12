@@ -1,14 +1,27 @@
-import json
 import requests
+from data_loading.load_to_bigquery import load_earthquake_to_bigquery
+from access_credentials.rapid_api_key import RAPID_API_KEY
 
-url = "https://everyearthquake.p.rapidapi.com/2.5_month.json"
 
-headers = {
-    "X-RapidAPI-Key": "8b11e016dbmsh4cbcc7882a937b8p18a64djsn48a0a59cc2c9",
-    "X-RapidAPI-Host": "everyearthquake.p.rapidapi.com"
-}
+def extract_load_earthquake_data():
+    url = "https://everyearthquake.p.rapidapi.com/2.5_month.json"
 
-response = requests.get(url, headers=headers)
+    headers = {
+        "X-RapidAPI-Key": RAPID_API_KEY,
+        "X-RapidAPI-Host": "everyearthquake.p.rapidapi.com"
+    }
 
-with open('past_every_earthquake.json', 'w') as file:
-    file.write(json.dumps(response.json()))
+    response = requests.get(url, headers=headers)
+    response_json = response.json()
+
+    cleaned_data = []
+    for item in response_json['data']:
+        item['earthquake_id'] = item.pop('id')
+        item.pop('locationDetails', None)
+        cleaned_data.append(item)
+
+    load_earthquake_to_bigquery(cleaned_data)
+
+
+if __name__ == '__main__':
+    extract_load_earthquake_data()

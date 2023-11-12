@@ -52,6 +52,7 @@ def segregate_raw_dataset(fill_missing_locations, fetch_lat_lon):
                                     'Disaster Subtype', 'Magnitude Scale']
     disaster_classification = df[disaster_classification_cols].drop_duplicates()
     disaster_classification.columns = ['ClassificationKey', 'Group', 'Subgroup', 'Type', 'Subtype', 'Unit']
+    disaster_classification['Subtype'] = disaster_classification['Subtype'].replace('Severe winter conditions', 'Cold wave')
     disaster_classification.sort_values('ClassificationKey', inplace=True)
     file_path = os.path.join(dir_path, "../Datasets/CleanedDatasets/DisasterClassification.csv")
     disaster_classification.to_csv(file_path, sep='|', index=False)
