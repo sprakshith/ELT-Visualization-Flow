@@ -58,7 +58,7 @@ def job():
 
     if results:
         try:
-            csv_filename = "../severe weather/events_data.csv"
+            csv_filename = "events_data.csv"
             save_to_csv(results, csv_filename)
 
         except Exception as e:

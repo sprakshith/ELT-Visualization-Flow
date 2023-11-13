@@ -13,9 +13,10 @@ def clean_and_save_data(input_file='../data_extraction/events_data.json', output
 
     # Remove newline characters from the 'description' field
     df['description'] = df['description'].str.replace('\n', ' ')
+    df[['latitude', 'longitude']] = df['location'].apply(pd.Series)
+    df = df.drop('location', axis=1)
     df.rename(columns={'end': 'ended'}, inplace=True)
     df.rename(columns={'rank': 'ranks'}, inplace=True)
     print('Cleaning completed')
     df.to_json(output_file, orient='records', lines=True)
 
-clean_and_save_data()
