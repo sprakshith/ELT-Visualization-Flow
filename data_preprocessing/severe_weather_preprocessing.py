@@ -1,7 +1,7 @@
 import os
 import pandas as pd
 
-def clean_and_save_data(input_file='events_data.json', output_file='cleaned.json'):
+def clean_and_save_data(input_file='../data_extraction/events_data.json', output_file='cleaned.json'):
     if not os.path.exists(input_file):
         print(f"Error: The input file '{input_file}' does not exist.")
         return
@@ -17,3 +17,5 @@ def clean_and_save_data(input_file='events_data.json', output_file='cleaned.json
     df.rename(columns={'rank': 'ranks'}, inplace=True)
     print('Cleaning completed')
     df.to_json(output_file, orient='records', lines=True)
+
+clean_and_save_data()

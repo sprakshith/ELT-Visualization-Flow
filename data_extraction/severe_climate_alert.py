@@ -1,7 +1,7 @@
 import json
 import requests
 import csv
-import cleaning as cl
+from data_preprocessing import severe_weather_preprocessing as swp
 
 ACCESS_TOKEN = '5Xbt14b32p7NW6IK3SShRXVVmwLJ6Czi3dkL6TH2'
 
@@ -58,11 +58,11 @@ def job():
 
     if results:
         try:
-            csv_filename = "events_data.csv"
+            csv_filename = "../severe weather/events_data.csv"
             save_to_csv(results, csv_filename)
 
         except Exception as e:
             print(f"An unexpected error occurred: {e}")
 
 job()
-cl.clean_and_save_data()
+swp.clean_and_save_data()
