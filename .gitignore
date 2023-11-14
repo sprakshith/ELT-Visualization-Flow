@@ -170,3 +170,4 @@ Datasets/
 
 # Cache
 .cache.sqlite
+/events_data.csv
