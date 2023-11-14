@@ -1,5 +1,6 @@
 import os
 import pandas as pd
+from data_loading import severe_weather_loading as sql
 
 def clean_and_save_data(input_file='../data_extraction/events_data.json', output_file='cleaned.json'):
     if not os.path.exists(input_file):
@@ -19,4 +20,5 @@ def clean_and_save_data(input_file='../data_extraction/events_data.json', output
     df.rename(columns={'rank': 'ranks'}, inplace=True)
     print('Cleaning completed')
     df.to_json(output_file, orient='records', lines=True)
+    sql.insert_data_into_bigquery()
 
