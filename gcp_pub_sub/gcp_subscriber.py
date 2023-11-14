@@ -1,7 +1,7 @@
 import os
 import json
 from google.cloud import pubsub_v1
-from data_loading.earthquake_append import insert_earthquake
+from data_loading.load_to_bigquery import load_earthquake_to_bigquery
 
 dir_path = os.path.dirname(os.path.realpath(__file__))
 ACCESS_KEY_PATH = os.path.join(dir_path, r"../access_credentials/rsp-dm-ii-dv-iii-elt-flow.json")
@@ -15,13 +15,18 @@ subscription_path = subscriber.subscription_path(project_id, subscription_name)
 
 
 def callback(message):
-    message_string = message.data.decode("utf-8")
-    message_dict = json.loads(message_string)
-
-    if message_dict['extracted_data_type'] == 'earthquake':
-        insert_earthquake(message_dict)
+    try:
+        message_string = message.data.decode("utf-8")
+        message_dict = json.loads(message_string)
+        print(message_dict)
+        if message_dict['extracted_data_type'] == 'earthquake':
+            load_earthquake_to_bigquery(message_dict)
+            return
+        else:
+            message.ack()
+    except Exception as e:
+        print(e)
         message.ack()
-        return
 
 
 def start_subscriber():
@@ -35,7 +40,6 @@ def start_subscriber():
     except Exception as e:
         print(e)
         streaming_pull_future.cancel()
-        start_subscriber()
 
 
 if __name__ == '__main__':
