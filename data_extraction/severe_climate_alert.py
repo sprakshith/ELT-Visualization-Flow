@@ -1,20 +1,20 @@
-import json
+import csv
 import requests
+from access_credentials.rapid_api_key import WEATHER_API_KEY
 from data_preprocessing import severe_weather_preprocessing as swp
 
-
-ACCESS_TOKEN = '5Xbt14b32p7NW6IK3SShRXVVmwLJ6Czi3dkL6TH2'
 
 def extract_data():
     try:
         response = requests.get(
             url="https://api.predicthq.com/v1/events/",
             headers={
-                "Authorization": f"Bearer {ACCESS_TOKEN}",
+                "Authorization": f"Bearer {WEATHER_API_KEY}",
                 "Accept": "application/json"
             },
             params={
-                "country": "DE,DK,SE,NL,LU,FR,CH,AT,CZ,PL,ES,IT,RO,GR,PT,HU,UA,RU,RS,SK,FI,NO,IE,HR,BA,AL,SI,LT,LV,EE,ME,MT,IS,AD,LI,MC,SM",
+                "country": "DE,DK,SE,NL,LU,FR,CH,AT,CZ,PL,ES,IT,RO,GR,PT,HU,UA,RU,RS,SK,FI,NO,IE,HR,BA,AL,SI,LT,LV,"
+                           "EE,ME,MT,IS,AD,LI,MC,SM",
                 "category": "severe-weather,disasters"
             }
         )
@@ -39,30 +39,33 @@ def extract_data():
         print(f"An unexpected error occurred: {e}")
         return None
 
-def save_to_json(data, filename):
+
+def save_to_csv(data, filename):
     try:
-        with open(filename, mode='w', encoding='utf-8') as json_file:
-            json.dump(data, json_file, ensure_ascii=False, indent=2)
+        # Assuming each item in the 'results' list is a dictionary
+        keys = data[0].keys()
+
+        with open(filename, mode='w', newline='', encoding='utf-8') as csv_file:
+            writer = csv.DictWriter(csv_file, fieldnames=keys)
+            writer.writeheader()
+            writer.writerows(data)
 
         print(f"Data has been saved to {filename}")
     except Exception as e:
         print(f"An unexpected error occurred: {e}")
+
 
 def job():
     results = extract_data()
 
     if results:
         try:
-            json_filename = "events_data.json"
-            save_to_json(results, json_filename)
+            csv_filename = "events_data.csv"
+            save_to_csv(results, csv_filename)
 
         except Exception as e:
             print(f"An unexpected error occurred: {e}")
 
-    swp.clean_and_save_data()
 
-
-if __name__ == '__main__':
-    job()
-
-
+job()
+swp.clean_and_save_data()

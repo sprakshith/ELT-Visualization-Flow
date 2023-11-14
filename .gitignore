@@ -170,6 +170,3 @@ Datasets/
 
 # Cache
 .cache.sqlite
-
-# Jupyter Notebooks
-Notebooks/

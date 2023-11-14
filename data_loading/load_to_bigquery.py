@@ -1,5 +1,5 @@
 import os
-
+import time
 from google.cloud import bigquery
 
 dir_path = os.path.dirname(os.path.realpath(__file__))
@@ -47,10 +47,7 @@ def create_hist_temp_table():
         dataset = bigquery.Dataset(dataset_id)
         client.create_dataset(dataset, timeout=30)
 
-    job_config = bigquery.LoadJobConfig(source_format=bigquery.SourceFormat.CSV, skip_leading_rows=1, autodetect=True,
-                                        write_disposition=bigquery.WriteDisposition.WRITE_TRUNCATE)
-
-    datasets_dir_path = os.path.join(dir_path, "../Datasets/IntermediateDatasets/WeatherCsvFiles/")
+    datasets_dir_path = os.path.join(dir_path, ".../Datasets/IntermediateDatasets/WeatherCsvFiles/")
     table_names = [file_name.split(".")[0] for file_name in os.listdir(datasets_dir_path)]
 
     table_id = f"{dataset_id}.HistoricalExtTemp"
@@ -64,6 +61,37 @@ def create_hist_temp_table():
 
         with open(table_file_path, "rb") as source_file:
             client.load_table_from_file(source_file, table_id, job_config=job_config)
+
+
+def create_forecast_temp_table():
+    client = bigquery.Client()
+
+    dataset_id = f"{client.project}.eu_disaster"
+
+    try:
+        client.get_dataset(dataset_id)
+    except:
+        dataset = bigquery.Dataset(dataset_id)
+        client.create_dataset(dataset, timeout=30)
+
+    datasets_dir_path = os.path.join(dir_path, "../Datasets/IntermediateDatasets/WeatherForecastCsvFiles/")
+    table_names = [file_name.split(".")[0] for file_name in os.listdir(datasets_dir_path)]
+
+    table_id = f"{dataset_id}.ForecastTemp"
+
+    for i, table in enumerate(table_names):
+        table_file_path = os.path.join(dir_path,
+                                       f"../Datasets/IntermediateDatasets/WeatherForecastCsvFiles/{table}.csv")
+
+        job_config = bigquery.LoadJobConfig(source_format=bigquery.SourceFormat.CSV, skip_leading_rows=1,
+                                            autodetect=True,
+                                            write_disposition=bigquery.WriteDisposition.WRITE_APPEND)
+
+        with open(table_file_path, "rb") as source_file:
+            try:
+                client.load_table_from_file(source_file, table_id, job_config=job_config)
+            except Exception as e:
+                print(e)
 
 
 def load_earthquake_to_bigquery(json_data):
@@ -84,3 +112,21 @@ def load_earthquake_to_bigquery(json_data):
         print("New rows have been added.")
     else:
         print("Encountered errors while inserting row: {}".format(errors))
+
+
+def remove_loaded_csv_files():
+    datasets_dir_path = os.path.join(dir_path, "../Datasets/IntermediateDatasets/WeatherForecastCsvFiles/")
+    table_names = [file_name.split(".")[0] for file_name in os.listdir(datasets_dir_path)]
+
+    for i, table in enumerate(table_names):
+        table_file_path = os.path.join(dir_path,
+                                       f"../Datasets/IntermediateDatasets/WeatherForecastCsvFiles/{table}.csv")
+
+        if os.path.exists(table_file_path):
+            os.remove(table_file_path)
+
+
+def load_extreme_temp_locations_forecast():
+    create_forecast_temp_table()
+    time.sleep(5)
+    remove_loaded_csv_files()

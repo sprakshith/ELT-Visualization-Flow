@@ -2,9 +2,8 @@ import json
 from google.cloud import bigquery
 
 
-
-def insert_data_into_bigquery(project_id='rsp-data-engineering-ii',dataset_id='eu_disaster',table_id='SevereWeather',file_path ='../data_preprocessing/cleaned.json'):
-
+def insert_data_into_bigquery(project_id='rsp-data-engineering-ii', dataset_id='eu_disaster', table_id='SevereWeather',
+                              file_path='../data_preprocessing/cleaned.json'):
     client = bigquery.Client(project_id)
 
     rows = []
@@ -29,4 +28,3 @@ def insert_data_into_bigquery(project_id='rsp-data-engineering-ii',dataset_id='e
             print('Data inserted successfully.')
     else:
         print('No valid data to insert.')
-

@@ -1,7 +1,9 @@
 import os
 from google.cloud import bigquery
 
-os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = r"access_credentials/rsp-dm-ii-dv-iii-elt-flow.json"
+dir_path = os.path.dirname(os.path.realpath(__file__))
+ACCESS_KEY_PATH = os.path.join(dir_path, r"../access_credentials/rsp-dm-ii-dv-iii-elt-flow.json")
+os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = ACCESS_KEY_PATH
 
 
 def insert_earthquake(json_data):

@@ -4,6 +4,7 @@ import time
 import openai
 import googlemaps
 import pandas as pd
+from sklearn.cluster import KMeans
 from access_credentials.gcp_credentials import GOOGLE_MAPS_KEY
 
 openai.api_key = os.environ.get('OPENAI_API_KEY')
@@ -88,3 +89,24 @@ def get_cities_and_towns(prompt):
     )
 
     return response.choices[0]['message']['content']
+
+
+def cluster_similar_locations():
+    disaster = pd.read_csv('./Datasets/CleanedDatasets/Disaster.csv', sep='|')
+    disaster_clf = pd.read_csv('./Datasets/CleanedDatasets/DisasterClassification.csv', sep='|')
+    location_df = pd.read_csv('./Datasets/CleanedDatasets/Location.csv', sep='|')
+
+    merged_df = pd.merge(disaster, disaster_clf, on='ClassificationKey', how='inner')
+    merged_df = merged_df[merged_df['Type'] == 'Extreme temperature']
+    merged_df = pd.merge(merged_df, location_df, left_on='DisasterNum', right_on='DisasterNo', how='inner')
+
+    locations = merged_df[['Latitude', 'Longitude']].values
+    num_clusters = 100
+    kmeans = KMeans(n_clusters=num_clusters, random_state=0)
+    kmeans.fit(locations)
+
+    cluster_centers = kmeans.cluster_centers_
+
+    centroids_df = pd.DataFrame(cluster_centers, columns=['Latitude', 'Longitude'])
+
+    centroids_df.to_csv('./Datasets/CleanedDatasets/LocationClusters.csv', sep='|', index=False)

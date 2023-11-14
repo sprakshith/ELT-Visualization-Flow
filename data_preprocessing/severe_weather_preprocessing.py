@@ -2,15 +2,16 @@ import os
 import pandas as pd
 from data_loading import severe_weather_loading as sql
 
+
 def clean_and_save_data(input_file='../data_extraction/events_data.json', output_file='cleaned.json'):
     if not os.path.exists(input_file):
         print(f"Error: The input file '{input_file}' does not exist.")
         return
 
     df = pd.read_json(input_file)
-    columns_to_drop = ['relevance', 'phq_attendance', 'geo', 'place_hierarchies','alternate_titles','local_rank', 'entities', "impact_patterns"]
+    columns_to_drop = ['relevance', 'phq_attendance', 'geo', 'place_hierarchies', 'alternate_titles', 'local_rank',
+                       'entities', "impact_patterns"]
     df = df.drop(columns=columns_to_drop)
-
 
     # Remove newline characters from the 'description' field
     df['description'] = df['description'].str.replace('\n', ' ')
@@ -21,4 +22,3 @@ def clean_and_save_data(input_file='../data_extraction/events_data.json', output
     print('Cleaning completed')
     df.to_json(output_file, orient='records', lines=True)
     sql.insert_data_into_bigquery()
-
