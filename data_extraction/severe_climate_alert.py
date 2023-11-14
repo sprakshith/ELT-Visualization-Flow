@@ -55,7 +55,7 @@ def save_to_csv(data, filename):
         print(f"An unexpected error occurred: {e}")
 
 
-def job():
+def severe_climate_extraction_job():
     results = extract_data()
 
     if results:
@@ -67,5 +67,5 @@ def job():
             print(f"An unexpected error occurred: {e}")
 
 
-job()
+severe_climate_extraction_job()
 swp.clean_and_save_data()
