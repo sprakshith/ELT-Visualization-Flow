@@ -1,4 +1,5 @@
 import os
+
 from google.cloud import bigquery
 
 dir_path = os.path.dirname(os.path.realpath(__file__))
@@ -48,7 +49,7 @@ def create_hist_temp_table():
 
     job_config = bigquery.LoadJobConfig(source_format=bigquery.SourceFormat.CSV, skip_leading_rows=1, autodetect=True,
                                         write_disposition=bigquery.WriteDisposition.WRITE_TRUNCATE)
-    
+
     datasets_dir_path = os.path.join(dir_path, "../Datasets/IntermediateDatasets/WeatherCsvFiles/")
     table_names = [file_name.split(".")[0] for file_name in os.listdir(datasets_dir_path)]
 
@@ -57,28 +58,9 @@ def create_hist_temp_table():
     for i, table in enumerate(table_names):
         table_file_path = os.path.join(dir_path, f"../Datasets/IntermediateDatasets/WeatherCsvFiles/{table}.csv")
 
-        job_config = bigquery.LoadJobConfig(source_format=bigquery.SourceFormat.CSV, skip_leading_rows=1, autodetect=True,
+        job_config = bigquery.LoadJobConfig(source_format=bigquery.SourceFormat.CSV, skip_leading_rows=1,
+                                            autodetect=True,
                                             write_disposition=bigquery.WriteDisposition.WRITE_TRUNCATE if i == 0 else bigquery.WriteDisposition.WRITE_APPEND)
 
         with open(table_file_path, "rb") as source_file:
             client.load_table_from_file(source_file, table_id, job_config=job_config)
-
-
-def load_earthquake_to_bigquery(json_data):
-    project_id = "rsp-data-engineering-ii"
-    dataset_id = 'eu_disaster'
-    table_id = 'Earthquake'
-
-    client = bigquery.Client(project=project_id)
-    table_ref = client.get_dataset(dataset_id).table(table_id)
-    
-    if type(json_data) == dict:
-        row_to_insert = [json_data]
-    else:
-        row_to_insert = json_data
-
-    errors = client.insert_rows_json(table_ref, row_to_insert)
-    if not errors:
-        print("New row has been added.")
-    else:
-        print("Encountered errors while inserting row: {}".format(errors))
