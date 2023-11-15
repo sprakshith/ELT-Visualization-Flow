@@ -29,11 +29,12 @@ def create_datasets_and_tables(recreate_tables):
     table_names = [file_name.split(".")[0] for file_name in os.listdir(datasets_dir_path)]
 
     for table in table_names:
-        table_id = f"{dataset_id}.{table}"
-        table_file_path = os.path.join(dir_path, f"../Datasets/CleanedDatasets/{table}.csv")
+        if table == "LocationClusters" or table == "LocationClustersConnection":
+            table_id = f"{dataset_id}.{table}"
+            table_file_path = os.path.join(dir_path, f"../Datasets/CleanedDatasets/{table}.csv")
 
-        with open(table_file_path, "rb") as source_file:
-            client.load_table_from_file(source_file, table_id, job_config=job_config)
+            with open(table_file_path, "rb") as source_file:
+                client.load_table_from_file(source_file, table_id, job_config=job_config)
 
 
 def create_hist_temp_table():
@@ -130,3 +131,6 @@ def load_extreme_temp_locations_forecast():
     create_forecast_temp_table()
     time.sleep(5)
     remove_loaded_csv_files()
+
+
+load_extreme_temp_locations_forecast()

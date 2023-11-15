@@ -66,7 +66,7 @@ def fetch_weather_data(disaster_num, location, latitude, longitude, start_date, 
     hourly_dataframe.to_csv(file_path, sep='|', index=False)
 
 
-def fetch_current_weather_data(latitude, longitude):
+def fetch_current_weather_data(latitude, longitude, cluster):
     url = "https://api.open-meteo.com/v1/forecast"
 
     params = {
@@ -93,6 +93,7 @@ def fetch_current_weather_data(latitude, longitude):
 
     hourly_data['latitude'] = latitude
     hourly_data['longitude'] = longitude
+    hourly_data['cluster'] = cluster
 
     file_name = f'Forecast_{int(time.time())}.csv'
     hourly_dataframe = pd.DataFrame(data=hourly_data)
@@ -161,7 +162,8 @@ def forcast_data_extraction():
     for row in location_clusters.iterrows():
         latitude = row[1]['Latitude']
         longitude = row[1]['Longitude']
-        fetch_current_weather_data(latitude, longitude)
+        cluster = row[1]['Cluster']
+        fetch_current_weather_data(latitude, longitude, cluster)
         time.sleep(1)
 
 

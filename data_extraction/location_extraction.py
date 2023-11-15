@@ -92,9 +92,9 @@ def get_cities_and_towns(prompt):
 
 
 def cluster_similar_locations():
-    disaster = pd.read_csv('./Datasets/CleanedDatasets/Disaster.csv', sep='|')
-    disaster_clf = pd.read_csv('./Datasets/CleanedDatasets/DisasterClassification.csv', sep='|')
-    location_df = pd.read_csv('./Datasets/CleanedDatasets/Location.csv', sep='|')
+    disaster = pd.read_csv('../Datasets/CleanedDatasets/Disaster.csv', sep='|')
+    disaster_clf = pd.read_csv('../Datasets/CleanedDatasets/DisasterClassification.csv', sep='|')
+    location_df = pd.read_csv('../Datasets/CleanedDatasets/Location.csv', sep='|')
 
     merged_df = pd.merge(disaster, disaster_clf, on='ClassificationKey', how='inner')
     merged_df = merged_df[merged_df['Type'] == 'Extreme temperature']
@@ -105,8 +105,19 @@ def cluster_similar_locations():
     kmeans = KMeans(n_clusters=num_clusters, random_state=0)
     kmeans.fit(locations)
 
+    merged_df['Cluster'] = kmeans.labels_
+
+    merged_df = merged_df[['DisasterNum', 'ClassificationKey', 'ISOCode',
+                           'Location', 'Latitude', 'Longitude', 'Cluster']]
+
     cluster_centers = kmeans.cluster_centers_
 
     centroids_df = pd.DataFrame(cluster_centers, columns=['Latitude', 'Longitude'])
+    centroids_df['Cluster'] = range(num_clusters)
 
-    centroids_df.to_csv('./Datasets/CleanedDatasets/LocationClusters.csv', sep='|', index=False)
+    merged_df.to_csv('../Datasets/CleanedDatasets/LocationClustersConnection.csv', sep='|', index=False)
+    centroids_df.to_csv('../Datasets/CleanedDatasets/LocationClusters.csv', sep='|', index=False)
+
+
+if __name__ == '__main__':
+    cluster_similar_locations()

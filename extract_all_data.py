@@ -1,7 +1,7 @@
 from data_loading import load_to_bigquery
 from data_preprocessing import data_segregation
 from data_extraction.severe_climate_alert import severe_climate_extraction_job
-from data_extraction.weather_data_extraction import load_hist_data_to_bq
+from data_extraction.weather_data_extraction import load_hist_data_to_bq, forcast_data_extraction
 from data_extraction.every_earthquake import extract_load_earthquake_data
 from data_loading.load_to_bigquery import load_extreme_temp_locations_forecast
 
@@ -34,6 +34,7 @@ except Exception as e:
 
 # Code to Extract Weather Data and Load it to BigQuery
 try:
+    forcast_data_extraction()
     load_extreme_temp_locations_forecast()
     print('Extracted and Loaded Forecast Data to BigQuery')
 except Exception as e:
